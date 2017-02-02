@@ -1,6 +1,5 @@
 package com.olerom.vk.core;
 
-import com.vk.api.sdk.actions.Friends;
 import com.vk.api.sdk.client.TransportClient;
 import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.client.actors.UserActor;
@@ -8,7 +7,16 @@ import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
 import com.vk.api.sdk.objects.UserAuthResponse;
+import com.vk.api.sdk.objects.friends.UserXtrLists;
+import com.vk.api.sdk.objects.friends.responses.GetFieldsResponse;
+import com.vk.api.sdk.objects.friends.responses.GetResponse;
+import com.vk.api.sdk.objects.users.UserXtrCounters;
 import com.vk.api.sdk.queries.friends.FriendsGetQuery;
+import com.vk.api.sdk.queries.friends.FriendsGetQueryWithFields;
+import com.vk.api.sdk.queries.users.UserField;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by olerom on 01.02.17.
@@ -39,23 +47,16 @@ public class User {
         actor = new UserActor(authResponse.getUserId(), authResponse.getAccessToken());
     }
 
-    public void getFriends() {
-        Friends friends = vkApiClient.friends();
-        FriendsGetQuery friendsGetQuery = friends.get(actor);
+    public List<UserXtrLists> getFriends() throws ClientException, ApiException {
+        List<UserField> fields = new ArrayList<>(5);
+        fields.add(UserField.BDATE);
+        fields.add(UserField.CITY);
+        fields.add(UserField.CONTACTS);
+        fields.add(UserField.IS_FRIEND);
+        fields.add(UserField.FRIEND_STATUS);
+        FriendsGetQueryWithFields friendsGetQueryWithFields = vkApiClient.friends().get(actor, fields);
+        GetFieldsResponse execute = friendsGetQueryWithFields.execute();
 
-        System.out.println(actor);
-    }
-
-    public void getJsonData() {
-//        JsonParser parser = new JsonParser();
-//        JsonObject mainObject = parser.parse().getAsJsonObject();
-//        JsonArray pItem = mainObject.getAsJsonArray("p_item");
-//        for (JsonElement user : pItem) {
-//            JsonObject userObject = user.getAsJsonObject();
-//            if (userObject.get("p_id").getAsInt() == 132) {
-//                System.out.println(userObject.get("p_name"));
-//                return;
-//            }
-//        }
+        return execute.getItems();
     }
 }

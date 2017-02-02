@@ -40,11 +40,11 @@ public class CodeServlet extends HttpServlet {
             User us = null;
             try {
                 us = new User(code);
-            } catch (ClientException e) {
-                e.printStackTrace();
-            } catch (ApiException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
+            System.out.println(code);
+            System.out.println(us.getUserActor().getId());
             response.getWriter().println(us.getUserActor().getId());
         }
     }

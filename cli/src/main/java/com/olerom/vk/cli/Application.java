@@ -2,7 +2,9 @@ package com.olerom.vk.cli;
 
 import com.olerom.vk.core.RequestVK;
 import com.olerom.vk.core.User;
+import com.vk.api.sdk.objects.friends.UserXtrLists;
 
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -26,7 +28,6 @@ public class Application {
         String code = scanner.next();
 
         User user = null;
-
         try {
             user = new User(code);
         } catch (Exception e) {
@@ -34,6 +35,20 @@ public class Application {
             e.printStackTrace();
             System.exit(1);
         }
+
+        try {
+            List<UserXtrLists> myFriends = null;
+            myFriends = user.getFriends();
+            for (UserXtrLists friend : myFriends) {
+                System.out.println(friend.getFirstName() + " " +
+                        friend.getLastName() + ": " +
+                        (friend.getCity() == null ? friend.getCity() : friend.getCity().getTitle()) + ", " +
+                        friend.getBdate() + ", " + friend.isIsFriend());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
     }
 

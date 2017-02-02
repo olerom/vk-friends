@@ -12,15 +12,17 @@ public class RequestVK {
     final static String CLIENT_SECRET = "yFDcIlB3etwopMbPTpNV";
     final static String REDIRECT_URI = "http://localhost:8080/";
     private final static String DISPLAY = "page";
-    private final static String PERMISSIONS = "friends,offline";
+    private final static String PERMISSIONS = "friends,groups";
+    private final static String RESPONSE_TYPE = "code";
 
     private String AUTH_URL = "https://oauth.vk.com/authorize" + "?client_id={APP_ID}"
-            + "&scope={PERMISSIONS}" + "&redirect_uri={REDIRECT_URI}";
+            + "&scope={PERMISSIONS}" + "&redirect_uri={REDIRECT_URI}" + "&response_type={RESPONSE_TYPE}";
 
     public RequestVK() {
         AUTH_URL = AUTH_URL.replace("{APP_ID}", "" + APP_ID)
                 .replace("{PERMISSIONS}", PERMISSIONS)
-                .replace("{REDIRECT_URI}", REDIRECT_URI).replace("{DISPLAY}", DISPLAY);
+                .replace("{REDIRECT_URI}", REDIRECT_URI).
+                        replace("{DISPLAY}", DISPLAY).replace("{RESPONSE_TYPE}", RESPONSE_TYPE);
     }
 
     public void makeRequest() throws IOException {

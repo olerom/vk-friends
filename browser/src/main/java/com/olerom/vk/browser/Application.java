@@ -10,6 +10,11 @@ public class Application {
 
     private void run() {
         MyServer myServer = new MyServer();
-        myServer.start();
+//        myServer.start();
+        try {
+            myServer.initServer("4fab94e265cbf8d41e");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
