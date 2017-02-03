@@ -9,9 +9,6 @@ import com.vk.api.sdk.httpclient.HttpTransportClient;
 import com.vk.api.sdk.objects.UserAuthResponse;
 import com.vk.api.sdk.objects.friends.UserXtrLists;
 import com.vk.api.sdk.objects.friends.responses.GetFieldsResponse;
-import com.vk.api.sdk.objects.friends.responses.GetResponse;
-import com.vk.api.sdk.objects.users.UserXtrCounters;
-import com.vk.api.sdk.queries.friends.FriendsGetQuery;
 import com.vk.api.sdk.queries.friends.FriendsGetQueryWithFields;
 import com.vk.api.sdk.queries.users.UserField;
 
@@ -25,6 +22,7 @@ public class User {
     private VkApiClient vkApiClient;
     private UserAuthResponse authResponse;
     private UserActor actor;
+
 
     public VkApiClient getVkApiClient() {
         return vkApiClient;
@@ -58,5 +56,32 @@ public class User {
         GetFieldsResponse execute = friendsGetQueryWithFields.execute();
 
         return execute.getItems();
+    }
+
+    public List<UserXtrLists> getFriendsByFriendId(int id) throws ClientException, ApiException {
+        return vkApiClient.friends().get(UserField.MAIDEN_NAME).userId(id).execute().getItems();
+    }
+
+    public boolean isFriend(int id) {
+        return true;
+    }
+
+    public boolean isFriend(UserXtrLists checkFor, int actualId) throws ClientException, ApiException {
+        List<UserXtrLists> x = getFriendsByFriendId(actualId);
+        return x.contains(checkFor);
+    }
+
+    public void test() {
+
+
+        try {
+            List<UserXtrLists> x = getFriendsByFriendId(1);
+            System.out.println(isFriend(x.get(5), 1));
+            System.out.println(isFriend(x.get(5), 154646434));
+        } catch (ClientException e) {
+            e.printStackTrace();
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
     }
 }

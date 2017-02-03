@@ -10,7 +10,7 @@ import java.net.URL;
 public class RequestVK {
     final static int APP_ID = 5850646;
     final static String CLIENT_SECRET = "yFDcIlB3etwopMbPTpNV";
-    final static String REDIRECT_URI = "http://localhost:8080/";
+    final static String REDIRECT_URI = "https://oauth.vk.com/blank.html/";
     private final static String DISPLAY = "page";
     private final static String PERMISSIONS = "friends,groups";
     private final static String RESPONSE_TYPE = "code";

@@ -2,6 +2,8 @@ package com.olerom.vk.cli;
 
 import com.olerom.vk.core.RequestVK;
 import com.olerom.vk.core.User;
+import com.olerom.vk.core.VkGraph;
+import com.sun.corba.se.impl.orbutil.graph.Graph;
 import com.vk.api.sdk.objects.friends.UserXtrLists;
 
 import java.util.List;
@@ -37,14 +39,23 @@ public class Application {
         }
 
         try {
-            List<UserXtrLists> myFriends = null;
-            myFriends = user.getFriends();
+            List<UserXtrLists> myFriends = user.getFriends();
+            VkGraph graph = new VkGraph();
             for (UserXtrLists friend : myFriends) {
-                System.out.println(friend.getFirstName() + " " +
-                        friend.getLastName() + ": " +
-                        (friend.getCity() == null ? friend.getCity() : friend.getCity().getTitle()) + ", " +
-                        friend.getBdate() + ", " + friend.isIsFriend());
+                graph.addVertex(friend);
             }
+
+            for (int i = 0; i < myFriends.size(); i++){
+                System.out.println("\n" + myFriends.get(i).getLastName() + " has so much friends: ");
+                for (int j = 0; j < myFriends.size(); j++){
+                    if (user.isFriend(myFriends.get(i), myFriends.get(j).getId())){
+//                        graph.addEdge(myFriends.get(i), myFriends.get(j));
+                        System.out.print(myFriends.get(j).getLastName() + ", ");
+                    }
+                }
+            }
+
+            user.test();
         } catch (Exception e) {
             e.printStackTrace();
         }
