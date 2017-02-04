@@ -1,5 +1,5 @@
 rootProject.name = 'vk_friends'
 include 'core'
 include 'cli'
-include 'desktop'
+include 'gui'
 

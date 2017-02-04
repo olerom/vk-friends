@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by olerom on 03.02.17.
+ * @author olerom
+ * Date: 03.02.17
  */
 public class VkGraph<T extends UserXtrLists> {
     private List<Node<T>> nodes;
@@ -33,7 +34,7 @@ public class VkGraph<T extends UserXtrLists> {
     }
 
     public void build(VkAdapter vkAdapter) throws ClientException, ApiException, InterruptedException {
-        for (UserXtrLists friend : vkAdapter.getYourFriends()) {
+        for (UserXtrLists friend : vkAdapter.getFriends()) {
             List<Integer> ids = vkAdapter.getMutals(friend.getId());
             for (int id : ids) {
                 addEdge((T) friend, (T) vkAdapter.getActualFriend(id));
@@ -62,52 +63,10 @@ public class VkGraph<T extends UserXtrLists> {
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         for (Node node : nodes) {
-            stringBuilder.append(node.toString()).
-                    append("\n");
+            stringBuilder
+                    .append(node.toString())
+                    .append("\n");
         }
         return stringBuilder.toString();
     }
-
-//    private class Node {
-//        private UserXtrLists value;
-//        private List<UserXtrLists> lines;
-//
-//        Node(UserXtrLists userXtrLists) {
-//            lines = new ArrayList<>();
-//            value = userXtrLists;
-//        }
-//
-//        @Override
-//        public String toString() {
-//            StringBuilder stringBuilder = new StringBuilder();
-//            stringBuilder.append(value.getFirstName() + " " + value.getLastName() + " = [");
-//            for (UserXtrLists user : lines) {
-//                stringBuilder.append(user.getFirstName() + " " + user.getLastName() + ", ");
-//            }
-//            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
-//            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
-//            stringBuilder.append("]");
-//            return stringBuilder.toString();
-//        }
-//
-//        public void addNode(UserXtrLists userXtrLists) {
-//            lines.add(userXtrLists);
-//        }
-//
-//        public boolean hasInside(UserXtrLists userXtrLists, UserXtrLists duplicated) {
-//            if (includes(userXtrLists)) {
-//                for (UserXtrLists line : lines) {
-//                    if (line.getId().equals(duplicated.getId())) {
-//                        return false;
-//                    }
-//                }
-//                return true;
-//            }
-//            return false;
-//        }
-//
-//        private boolean includes(UserXtrLists userXtrLists) {
-//            return value.equals(userXtrLists);
-//        }
-//    }
 }

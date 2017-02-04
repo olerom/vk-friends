@@ -17,16 +17,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by olerom on 01.02.17.
+ * @author olerom
+ * Date: 01.02.17
  */
 public class VkAdapter {
     private VkApiClient vkApiClient;
     private UserAuthResponse authResponse;
     private UserActor actor;
-
-    public List<UserXtrLists> getYourFriends() {
-        return yourFriends;
-    }
 
     private List<UserXtrLists> yourFriends;
 
@@ -49,21 +46,15 @@ public class VkAdapter {
                 .userAuthorizationCodeFlow(VkRequest.APP_ID, VkRequest.CLIENT_SECRET, VkRequest.REDIRECT_URI, code)
                 .execute();
         actor = new UserActor(authResponse.getUserId(), authResponse.getAccessToken());
-    }
-
-    public List<UserXtrLists> getFriends() throws ClientException, ApiException {
-        List<UserField> fields = new ArrayList<>(5);
-        fields.add(UserField.BDATE);
-        fields.add(UserField.CITY);
-        fields.add(UserField.CONTACTS);
-        fields.add(UserField.IS_FRIEND);
-        fields.add(UserField.FRIEND_STATUS);
+        List<UserField> fields = createFields();
         FriendsGetQueryWithFields friendsGetQueryWithFields = vkApiClient.friends().get(actor, fields);
         GetFieldsResponse execute = friendsGetQueryWithFields.execute();
         yourFriends = execute.getItems();
-        return yourFriends;
     }
 
+    public List<UserXtrLists> getFriends(){
+        return yourFriends;
+    }
 
     public List<UserXtrLists> getFriendsByFriendId(int id) throws ClientException, ApiException {
         List<UserField> fields = new ArrayList<>(5);
@@ -115,17 +106,5 @@ public class VkAdapter {
         fields.add(UserField.IS_FRIEND);
         fields.add(UserField.FRIEND_STATUS);
         return fields;
-    }
-
-    public void test() {
-        try {
-            List<UserXtrLists> x = getFriendsByFriendId(1);
-            System.out.println(isFriend(x.get(5), 1));
-            System.out.println(isFriend(x.get(5), 154646434));
-        } catch (ClientException e) {
-            e.printStackTrace();
-        } catch (ApiException e) {
-            e.printStackTrace();
-        }
     }
 }

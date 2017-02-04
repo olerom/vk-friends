@@ -1,9 +1,5 @@
 package com.olerom.vk.core;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
 /**
  * Created by olerom on 01.02.17.
  */
@@ -19,16 +15,12 @@ public class VkRequest {
             + "&scope={PERMISSIONS}" + "&redirect_uri={REDIRECT_URI}" + "&response_type={RESPONSE_TYPE}";
 
     public VkRequest() {
-        AUTH_URL = AUTH_URL.replace("{APP_ID}", "" + APP_ID)
+        AUTH_URL = AUTH_URL
+                .replace("{APP_ID}", "" + APP_ID)
                 .replace("{PERMISSIONS}", PERMISSIONS)
-                .replace("{REDIRECT_URI}", REDIRECT_URI).
-                        replace("{DISPLAY}", DISPLAY).replace("{RESPONSE_TYPE}", RESPONSE_TYPE);
-    }
-
-    public void makeRequest() throws IOException {
-        URL url = new URL(AUTH_URL);
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod("GET");
+                .replace("{REDIRECT_URI}", REDIRECT_URI)
+                .replace("{DISPLAY}", DISPLAY)
+                .replace("{RESPONSE_TYPE}", RESPONSE_TYPE);
     }
 
     public String getAuthURL() {

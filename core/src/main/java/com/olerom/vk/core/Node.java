@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * @author olerom
- * @since 04.02.17
+ * Date 04.02.17
  */
 class Node<T extends UserXtrLists> {
     private T value;
@@ -21,15 +21,17 @@ class Node<T extends UserXtrLists> {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(value.getFirstName()).
-                append(" ").
-                append(value.getLastName())
+        stringBuilder
+                .append(value.getFirstName())
+                .append(" ")
+                .append(value.getLastName())
                 .append(" = [");
         for (T user : lines) {
-            stringBuilder.append(user.getFirstName()).
-                    append(" ").
-                    append(user.getLastName()).
-                    append(", ");
+            stringBuilder
+                    .append(user.getFirstName())
+                    .append(" ")
+                    .append(user.getLastName())
+                    .append(", ");
         }
         stringBuilder.deleteCharAt(stringBuilder.length() - 1);
         stringBuilder.deleteCharAt(stringBuilder.length() - 1);

@@ -9,22 +9,43 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Created by olerom on 01.02.17.
+ * @author olerom
+ *         Date: 01.02.17
  */
 public class Application {
+    private final Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) {
-        new Application().run();
+        new Application().switcher();
+    }
+
+    private void switcher() {
+        System.out.print(">>");
+        switch (scanner.next()) {
+            case "run":
+                run();
+                break;
+            case "help":
+                help();
+                break;
+            case "exit":
+                exit();
+                break;
+            default:
+                System.out.println("Wrong command. Try again.");
+                switcher();
+                break;
+        }
     }
 
     private void run() {
-        System.out.println("CLI: vk_friends graph");
+        System.out.println("CLI: vk_friends social graph");
         VkRequest vkRequest = new VkRequest();
 
         System.out.println("You can accept permissions at: ");
         System.out.println(vkRequest.getAuthURL());
 
-        System.out.println("Enter code value: ");
-        System.out.print(">>");
+        System.out.print("Enter code value: ");
         Scanner scanner = new Scanner(System.in);
         String code = scanner.next();
 
@@ -41,24 +62,23 @@ public class Application {
             List<UserXtrLists> myFriends = vk.getFriends();
             VkGraph<UserXtrLists> graph = new VkGraph<>(myFriends);
             graph.build(vk);
-
-//            for (UserXtrLists friend : myFriends) {
-//                List<Integer> ids = vk.getMutals(friend.getId());
-//                for (int id : ids) {
-//                    graph.addEdge(friend, vk.getActualFriend(id));
-//                }
-//                Thread.sleep(500);
-//            }
-
             System.out.println(graph);
-
         } catch (Exception e) {
+            System.out.println("Problem with graph building.");
             e.printStackTrace();
+            System.exit(1);
         }
-
-
     }
 
     private void help() {
+        System.out.println("Command to run application: run");
+        System.out.println("Command to exit: exit");
+        System.out.println("Code will be sent as a GET parameter.");
+        System.out.println("Code can be used in one hour.");
+        switcher();
+    }
+
+    private void exit() {
+        System.exit(0);
     }
 }
