@@ -1,9 +1,8 @@
 package com.olerom.vk.cli;
 
-import com.olerom.vk.core.RequestVK;
-import com.olerom.vk.core.User;
+import com.olerom.vk.core.VkAdapter;
 import com.olerom.vk.core.VkGraph;
-import com.sun.corba.se.impl.orbutil.graph.Graph;
+import com.olerom.vk.core.VkRequest;
 import com.vk.api.sdk.objects.friends.UserXtrLists;
 
 import java.util.List;
@@ -19,43 +18,53 @@ public class Application {
 
     private void run() {
         System.out.println("CLI: vk_friends graph");
-        RequestVK requestVK = new RequestVK();
+        VkRequest vkRequest = new VkRequest();
 
         System.out.println("You can accept permissions at: ");
-        System.out.println(requestVK.getAuthURL());
+        System.out.println(vkRequest.getAuthURL());
 
         System.out.println("Enter code value: ");
         System.out.print(">>");
         Scanner scanner = new Scanner(System.in);
         String code = scanner.next();
 
-        User user = null;
+        VkAdapter vk = null;
         try {
-            user = new User(code);
+            vk = new VkAdapter(code);
         } catch (Exception e) {
-            System.out.println("Problem with getting UserActor.");
+            System.out.println("Problem with creating VkAdapter, check code value.");
             e.printStackTrace();
             System.exit(1);
         }
 
         try {
-            List<UserXtrLists> myFriends = user.getFriends();
+            List<UserXtrLists> myFriends = vk.getFriends();
             VkGraph graph = new VkGraph();
+            int i = 0;
+
             for (UserXtrLists friend : myFriends) {
                 graph.addVertex(friend);
             }
 
-            for (int i = 0; i < myFriends.size(); i++){
-                System.out.println("\n" + myFriends.get(i).getLastName() + " has so much friends: ");
-                for (int j = 0; j < myFriends.size(); j++){
-                    if (user.isFriend(myFriends.get(i), myFriends.get(j).getId())){
-//                        graph.addEdge(myFriends.get(i), myFriends.get(j));
-                        System.out.print(myFriends.get(j).getLastName() + ", ");
-                    }
+            for (UserXtrLists friend : myFriends) {
+                List<Integer> id = vk.getMutalz(friend.getId());
+                for (int ok : id) {
+                    graph.addEdge(friend, vk.getActualFriend(ok));
                 }
+
+//                StringBuilder stringBuilder = new StringBuilder();
+//                stringBuilder.append(i++ + ". " + friend.getFirstName() + " " + friend.getLastName() + " has friends: ");
+//                List<Integer> ids = vk.getMutalz(friend.getId());
+//                for (int ok : ids) {
+//                    UserXtrLists kek = vk.getActualFriend(ok);
+//                    stringBuilder.append(kek.getFirstName() + " " + kek.getLastName() + ", ");
+//                }
+                Thread.sleep(500);
             }
 
-            user.test();
+            System.out.println(graph);
+
+            vk.test();
         } catch (Exception e) {
             e.printStackTrace();
         }

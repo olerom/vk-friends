@@ -9,54 +9,88 @@ import java.util.List;
  * Created by olerom on 03.02.17.
  */
 public class VkGraph {
-    private List<Node> vertexes;
-    private int currentPosition;
+    private List<Node> nodes;
 
     public VkGraph() {
-        vertexes = new ArrayList<>();
-        currentPosition = 0;
+        nodes = new ArrayList<>();
     }
 
     public VkGraph(int numberOfVertexes) {
-        vertexes = new ArrayList<>(numberOfVertexes);
-        currentPosition = 0;
+        nodes = new ArrayList<>(numberOfVertexes);
     }
 
     public void addVertex(UserXtrLists vertex) {
-        vertexes.add(new Node(vertex));
+        nodes.add(new Node(vertex));
     }
+
 
     public void addEdge(UserXtrLists from, UserXtrLists to) {
-        findNode(from).addNode(to);
-        findNode(to).addNode(from);
+        if (findNode(from, to) != null) {
+            findNode(from, to).addNode(to);
+        }
+        if (findNode(to, from) != null) {
+            findNode(to, from).addNode(from);
+        }
     }
 
-    private Node findNode(UserXtrLists find) {
-        for (Node node : vertexes) {
-            if (node.hasInside(find)){
+    private Node findNode(UserXtrLists find, UserXtrLists duplicated) {
+        for (Node node : nodes) {
+            if (node.hasInside(find, duplicated)) {
                 return node;
             }
         }
         return null;
     }
 
-    private class Node {
-        List<UserXtrLists> nodes;
-
-        Node() {
-            nodes = new ArrayList<>();
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Node node : nodes) {
+            stringBuilder.append(node.toString() + "\n");
         }
+        return stringBuilder.toString();
+    }
+
+    private class Node {
+        private UserXtrLists value;
+        private List<UserXtrLists> lines;
 
         Node(UserXtrLists userXtrLists) {
-            nodes = new ArrayList<>();
-            nodes.add(userXtrLists);
+            lines = new ArrayList<>();
+            value = userXtrLists;
         }
 
-        public void addNode(UserXtrLists userXtrLists){
-            nodes.add(userXtrLists);
+        @Override
+        public String toString() {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(value.getFirstName() + " " + value.getLastName() + " = [");
+            for (UserXtrLists user : lines) {
+                stringBuilder.append(user.getFirstName() + " " + user.getLastName() + ", ");
+            }
+            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+            stringBuilder.append("]");
+            return stringBuilder.toString();
         }
-        public boolean hasInside(UserXtrLists userXtrLists){
-            return nodes.get(0).equals(userXtrLists);
+
+        public void addNode(UserXtrLists userXtrLists) {
+            lines.add(userXtrLists);
+        }
+
+        public boolean hasInside(UserXtrLists userXtrLists, UserXtrLists duplicated) {
+            if (includes(userXtrLists)) {
+                for (UserXtrLists line : lines) {
+                    if (line.getId().equals(duplicated.getId())) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            return false;
+        }
+
+        private boolean includes(UserXtrLists userXtrLists) {
+            return value.equals(userXtrLists);
         }
     }
 }

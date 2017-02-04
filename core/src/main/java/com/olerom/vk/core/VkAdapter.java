@@ -9,6 +9,7 @@ import com.vk.api.sdk.httpclient.HttpTransportClient;
 import com.vk.api.sdk.objects.UserAuthResponse;
 import com.vk.api.sdk.objects.friends.UserXtrLists;
 import com.vk.api.sdk.objects.friends.responses.GetFieldsResponse;
+import com.vk.api.sdk.objects.users.UserXtrCounters;
 import com.vk.api.sdk.queries.friends.FriendsGetQueryWithFields;
 import com.vk.api.sdk.queries.users.UserField;
 
@@ -18,10 +19,11 @@ import java.util.List;
 /**
  * Created by olerom on 01.02.17.
  */
-public class User {
+public class VkAdapter {
     private VkApiClient vkApiClient;
     private UserAuthResponse authResponse;
     private UserActor actor;
+    private List<UserXtrLists> yourFriends;
 
 
     public VkApiClient getVkApiClient() {
@@ -36,11 +38,11 @@ public class User {
         return actor;
     }
 
-    public User(String code) throws ClientException, ApiException {
+    public VkAdapter(String code) throws ClientException, ApiException {
         TransportClient transportClient = HttpTransportClient.getInstance();
         vkApiClient = new VkApiClient(transportClient);
         authResponse = vkApiClient.oauth()
-                .userAuthorizationCodeFlow(RequestVK.APP_ID, RequestVK.CLIENT_SECRET, RequestVK.REDIRECT_URI, code)
+                .userAuthorizationCodeFlow(VkRequest.APP_ID, VkRequest.CLIENT_SECRET, VkRequest.REDIRECT_URI, code)
                 .execute();
         actor = new UserActor(authResponse.getUserId(), authResponse.getAccessToken());
     }
@@ -54,26 +56,65 @@ public class User {
         fields.add(UserField.FRIEND_STATUS);
         FriendsGetQueryWithFields friendsGetQueryWithFields = vkApiClient.friends().get(actor, fields);
         GetFieldsResponse execute = friendsGetQueryWithFields.execute();
-
-        return execute.getItems();
+        yourFriends = execute.getItems();
+//        return execute.getItems();
+        return yourFriends;
     }
+
 
     public List<UserXtrLists> getFriendsByFriendId(int id) throws ClientException, ApiException {
-        return vkApiClient.friends().get(UserField.MAIDEN_NAME).userId(id).execute().getItems();
-    }
-
-    public boolean isFriend(int id) {
-        return true;
+        List<UserField> fields = new ArrayList<>(5);
+        fields.add(UserField.BDATE);
+        fields.add(UserField.CITY);
+        fields.add(UserField.CONTACTS);
+        fields.add(UserField.IS_FRIEND);
+        fields.add(UserField.FRIEND_STATUS);
+        return vkApiClient.friends().get(fields).userId(id).execute().getItems();
     }
 
     public boolean isFriend(UserXtrLists checkFor, int actualId) throws ClientException, ApiException {
-        List<UserXtrLists> x = getFriendsByFriendId(actualId);
-        return x.contains(checkFor);
+        List<UserXtrLists> x = getFriendsByFriendId(checkFor.getId());
+        for (UserXtrLists user : x) {
+            if (user.getId() == actualId)
+                return true;
+        }
+        return false;
+    }
+
+    public List<Integer> getMutalz(int id) throws ClientException, ApiException {
+        return vkApiClient.friends().getMutual(actor).targetUid(id).execute();
+    }
+
+    // Critical problem, wrong return Type
+    public List<Integer> getMutalNoEx(int id) throws ClientException, ApiException {
+        List<Integer> ids = new ArrayList<>();
+        for (UserXtrLists friend : yourFriends) {
+            ids.add(friend.getId());
+        }
+        return vkApiClient.friends().getMutual(actor).targetUids(ids).execute();
+    }
+
+
+    public UserXtrLists getActualFriend(int id) throws ClientException, ApiException {
+        List<UserXtrCounters> res = new ArrayList<>();
+        for (UserXtrLists friend : yourFriends) {
+            if (friend.getId() == id)
+                return friend;
+        }
+        return null;
+    }
+
+    private List<UserField> createFields() {
+        List<UserField> fields = new ArrayList<>(5);
+        fields.add(UserField.BDATE);
+        fields.add(UserField.CITY);
+        fields.add(UserField.CONTACTS);
+        fields.add(UserField.IS_FRIEND);
+        fields.add(UserField.FRIEND_STATUS);
+        return fields;
     }
 
     public void test() {
-
-
         try {
             List<UserXtrLists> x = getFriendsByFriendId(1);
             System.out.println(isFriend(x.get(5), 1));
