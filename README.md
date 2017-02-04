@@ -1,2 +1,2 @@
-# vk_friends
-VK friends graph builder written on java
+# Social graph
+Simple [VK](https://vk.com/) social graph builder.

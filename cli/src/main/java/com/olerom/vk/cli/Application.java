@@ -39,32 +39,19 @@ public class Application {
 
         try {
             List<UserXtrLists> myFriends = vk.getFriends();
-            VkGraph graph = new VkGraph();
-            int i = 0;
+            VkGraph<UserXtrLists> graph = new VkGraph<>(myFriends);
+            graph.build(vk);
 
-            for (UserXtrLists friend : myFriends) {
-                graph.addVertex(friend);
-            }
-
-            for (UserXtrLists friend : myFriends) {
-                List<Integer> id = vk.getMutalz(friend.getId());
-                for (int ok : id) {
-                    graph.addEdge(friend, vk.getActualFriend(ok));
-                }
-
-//                StringBuilder stringBuilder = new StringBuilder();
-//                stringBuilder.append(i++ + ". " + friend.getFirstName() + " " + friend.getLastName() + " has friends: ");
-//                List<Integer> ids = vk.getMutalz(friend.getId());
-//                for (int ok : ids) {
-//                    UserXtrLists kek = vk.getActualFriend(ok);
-//                    stringBuilder.append(kek.getFirstName() + " " + kek.getLastName() + ", ");
+//            for (UserXtrLists friend : myFriends) {
+//                List<Integer> ids = vk.getMutals(friend.getId());
+//                for (int id : ids) {
+//                    graph.addEdge(friend, vk.getActualFriend(id));
 //                }
-                Thread.sleep(500);
-            }
+//                Thread.sleep(500);
+//            }
 
             System.out.println(graph);
 
-            vk.test();
         } catch (Exception e) {
             e.printStackTrace();
         }

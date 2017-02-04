@@ -23,8 +23,12 @@ public class VkAdapter {
     private VkApiClient vkApiClient;
     private UserAuthResponse authResponse;
     private UserActor actor;
-    private List<UserXtrLists> yourFriends;
 
+    public List<UserXtrLists> getYourFriends() {
+        return yourFriends;
+    }
+
+    private List<UserXtrLists> yourFriends;
 
     public VkApiClient getVkApiClient() {
         return vkApiClient;
@@ -57,7 +61,6 @@ public class VkAdapter {
         FriendsGetQueryWithFields friendsGetQueryWithFields = vkApiClient.friends().get(actor, fields);
         GetFieldsResponse execute = friendsGetQueryWithFields.execute();
         yourFriends = execute.getItems();
-//        return execute.getItems();
         return yourFriends;
     }
 
@@ -81,7 +84,7 @@ public class VkAdapter {
         return false;
     }
 
-    public List<Integer> getMutalz(int id) throws ClientException, ApiException {
+    public List<Integer> getMutals(int id) throws ClientException, ApiException {
         return vkApiClient.friends().getMutual(actor).targetUid(id).execute();
     }
 
