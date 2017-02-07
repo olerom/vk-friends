@@ -9,8 +9,9 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
+ * Date: 01.02.17
+ *
  * @author olerom
- *         Date: 01.02.17
  */
 public class Application {
     private final Scanner scanner = new Scanner(System.in);
@@ -68,6 +69,7 @@ public class Application {
             e.printStackTrace();
             System.exit(1);
         }
+        switcher();
     }
 
     private void help() {

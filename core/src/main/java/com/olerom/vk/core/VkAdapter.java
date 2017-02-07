@@ -9,7 +9,6 @@ import com.vk.api.sdk.httpclient.HttpTransportClient;
 import com.vk.api.sdk.objects.UserAuthResponse;
 import com.vk.api.sdk.objects.friends.UserXtrLists;
 import com.vk.api.sdk.objects.friends.responses.GetFieldsResponse;
-import com.vk.api.sdk.objects.users.UserXtrCounters;
 import com.vk.api.sdk.queries.friends.FriendsGetQueryWithFields;
 import com.vk.api.sdk.queries.users.UserField;
 
@@ -17,14 +16,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author olerom
  * Date: 01.02.17
+ *
+ * @author olerom
  */
 public class VkAdapter {
     private VkApiClient vkApiClient;
     private UserAuthResponse authResponse;
     private UserActor actor;
-
+    private List<UserField> fields;
     private List<UserXtrLists> yourFriends;
 
     public VkApiClient getVkApiClient() {
@@ -46,27 +46,21 @@ public class VkAdapter {
                 .userAuthorizationCodeFlow(VkRequest.APP_ID, VkRequest.CLIENT_SECRET, VkRequest.REDIRECT_URI, code)
                 .execute();
         actor = new UserActor(authResponse.getUserId(), authResponse.getAccessToken());
-        List<UserField> fields = createFields();
+        fields = createFields();
         FriendsGetQueryWithFields friendsGetQueryWithFields = vkApiClient.friends().get(actor, fields);
         GetFieldsResponse execute = friendsGetQueryWithFields.execute();
         yourFriends = execute.getItems();
     }
 
-    public List<UserXtrLists> getFriends(){
+    public List<UserXtrLists> getFriends() {
         return yourFriends;
     }
 
-    public List<UserXtrLists> getFriendsByFriendId(int id) throws ClientException, ApiException {
-        List<UserField> fields = new ArrayList<>(5);
-        fields.add(UserField.BDATE);
-        fields.add(UserField.CITY);
-        fields.add(UserField.CONTACTS);
-        fields.add(UserField.IS_FRIEND);
-        fields.add(UserField.FRIEND_STATUS);
+    List<UserXtrLists> getFriendsByFriendId(int id) throws ClientException, ApiException {
         return vkApiClient.friends().get(fields).userId(id).execute().getItems();
     }
 
-    public boolean isFriend(UserXtrLists checkFor, int actualId) throws ClientException, ApiException {
+    boolean isFriend(UserXtrLists checkFor, int actualId) throws ClientException, ApiException {
         List<UserXtrLists> x = getFriendsByFriendId(checkFor.getId());
         for (UserXtrLists user : x) {
             if (user.getId() == actualId)
@@ -75,7 +69,7 @@ public class VkAdapter {
         return false;
     }
 
-    public List<Integer> getMutals(int id) throws ClientException, ApiException {
+    List<Integer> getMutals(int id) throws ClientException, ApiException {
         return vkApiClient.friends().getMutual(actor).targetUid(id).execute();
     }
 
@@ -89,8 +83,7 @@ public class VkAdapter {
     }
 
 
-    public UserXtrLists getActualFriend(int id) throws ClientException, ApiException {
-        List<UserXtrCounters> res = new ArrayList<>();
+    UserXtrLists getActualFriend(int id) throws ClientException, ApiException {
         for (UserXtrLists friend : yourFriends) {
             if (friend.getId() == id)
                 return friend;

@@ -1,7 +1,8 @@
 package com.olerom.vk.core;
 
 /**
- * Created by olerom on 01.02.17.
+ * @author olerom
+ * Date: 01.02.17
  */
 public class VkRequest {
     final static int APP_ID = 5850646;
