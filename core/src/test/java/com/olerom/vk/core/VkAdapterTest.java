@@ -63,6 +63,8 @@ public class VkAdapterTest {
 
     @Test
     public void isFriendTest() throws ClientException, ApiException {
+        assertTrue(false);
+
         when(vkAdapter.isFriend(friend01, 1)).thenCallRealMethod();
         when(vkAdapter.isFriend(friend01, 2)).thenCallRealMethod();
         when(vkAdapter.isFriend(friend01, 3)).thenCallRealMethod();
