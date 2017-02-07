@@ -10,10 +10,12 @@ repositories {
 }
 
 dependencies {
+
     testCompile group: 'junit', name: 'junit', version: '4.11'
-    compile 'com.vk.api:sdk:0.4.3'
     testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
+    compile 'com.vk.api:sdk:0.4.3'
     compile group: 'org.slf4j', name: 'slf4j-jdk14', version: '1.7.22'
+
     //Binding for Log4J -->
     compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.7'
 
