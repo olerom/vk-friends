@@ -71,7 +71,6 @@ public class VkAdapterTest {
         when(vkAdapter.isFriend(friend02, 2)).thenCallRealMethod();
         when(vkAdapter.isFriend(friend02, 3)).thenCallRealMethod();
 
-
         when(vkAdapter.isFriend(friend03, 1)).thenCallRealMethod();
         when(vkAdapter.isFriend(friend03, 2)).thenCallRealMethod();
         when(vkAdapter.isFriend(friend03, 3)).thenCallRealMethod();

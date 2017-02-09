@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * @author olerom
- * Date: 03.02.17
+ *         Date: 03.02.17
  */
 public class VkGraph<T extends UserXtrLists> {
     private List<Node<T>> nodes;
@@ -35,12 +35,15 @@ public class VkGraph<T extends UserXtrLists> {
 
     public void build(VkAdapter vkAdapter) throws ClientException, ApiException, InterruptedException {
         for (UserXtrLists friend : vkAdapter.getFriends()) {
-            List<Integer> ids = vkAdapter.getMutals(friend.getId());
-            for (int id : ids) {
-                addEdge((T) friend, (T) vkAdapter.getActualFriend(id));
+            if (!vkAdapter.isDeactivated(friend)) {
+                List<Integer> ids = vkAdapter.getMutals(friend.getId());
+                for (int id : ids) {
+                    addEdge((T) friend, (T) vkAdapter.getActualFriend(id));
+                }
+                Thread.sleep(500);
             }
-            Thread.sleep(500);
         }
+
     }
 
     public void addEdge(T from, T to) {

@@ -47,7 +47,6 @@ public class Application {
         System.out.println(vkRequest.getAuthURL());
 
         System.out.print("Enter code value: ");
-        Scanner scanner = new Scanner(System.in);
         String code = scanner.next();
 
         VkAdapter vk = null;

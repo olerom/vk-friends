@@ -22,17 +22,12 @@ import java.util.List;
  */
 public class VkAdapter {
     private VkApiClient vkApiClient;
-    private UserAuthResponse authResponse;
     private UserActor actor;
     private List<UserField> fields;
     private List<UserXtrLists> yourFriends;
 
     public VkApiClient getVkApiClient() {
         return vkApiClient;
-    }
-
-    public UserAuthResponse getAuthResponse() {
-        return authResponse;
     }
 
     public UserActor getUserActor() {
@@ -42,7 +37,7 @@ public class VkAdapter {
     public VkAdapter(String code) throws ClientException, ApiException {
         TransportClient transportClient = HttpTransportClient.getInstance();
         vkApiClient = new VkApiClient(transportClient);
-        authResponse = vkApiClient.oauth()
+        UserAuthResponse authResponse = vkApiClient.oauth()
                 .userAuthorizationCodeFlow(VkRequest.APP_ID, VkRequest.CLIENT_SECRET, VkRequest.REDIRECT_URI, code)
                 .execute();
         actor = new UserActor(authResponse.getUserId(), authResponse.getAccessToken());
@@ -71,6 +66,10 @@ public class VkAdapter {
 
     List<Integer> getMutals(int id) throws ClientException, ApiException {
         return vkApiClient.friends().getMutual(actor).targetUid(id).execute();
+    }
+
+    public boolean isDeactivated(UserXtrLists friend) {
+        return friend.getDeactivated().equals("deleted") || friend.getDeactivated().equals("banned");
     }
 
     // Critical problem, wrong return Type
