@@ -69,7 +69,7 @@ public class VkAdapter {
     }
 
     public boolean isDeactivated(UserXtrLists friend) {
-        return !(friend.getDeactivated() == null) & !(friend.getDeactivated() == null);
+        return !(friend.getDeactivated() == null) && !(friend.getDeactivated() == null);
     }
 
     // Critical problem, wrong return Type
