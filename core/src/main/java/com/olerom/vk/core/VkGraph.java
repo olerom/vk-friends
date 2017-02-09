@@ -43,7 +43,6 @@ public class VkGraph<T extends UserXtrLists> {
                 Thread.sleep(500);
             }
         }
-
     }
 
     public void addEdge(T from, T to) {
