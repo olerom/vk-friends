@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<!--<VBox stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1"-->
+<!--fx:controller="com.olerom.vk.gui.controllers.MainController">-->
+<!--&lt;!&ndash;<children>&ndash;&gt;-->
+<!--&lt;!&ndash;<MenuBar VBox.vgrow="NEVER">&ndash;&gt;-->
+<!--&lt;!&ndash;<menus>&ndash;&gt;-->
+<!--&lt;!&ndash;<Menu text="Help">&ndash;&gt;-->
+<!--&lt;!&ndash;</Menu>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;<Menu fx:id="currDateMenu" mnemonicParsing="false" disable="true"/>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;</menus>&ndash;&gt;-->
+<!--&lt;!&ndash;</MenuBar>&ndash;&gt;-->
+<!--&lt;!&ndash;<AnchorPane prefHeight="200.0" prefWidth="617.0" />&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;<StatusBar fx:id="statusBar" text=""/>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;</children>&ndash;&gt;-->
+<!--</VBox>-->
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <MenuBar layoutX="7.0" layoutY="6.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="Help" />
+        </menus>
+      </MenuBar>
+      <TextField layoutX="26.0" layoutY="125.0" promptText="Code value" />
+      <Button layoutX="26.0" layoutY="161.0" mnemonicParsing="false" text="Build graph" />
+   </children>
+</AnchorPane>
