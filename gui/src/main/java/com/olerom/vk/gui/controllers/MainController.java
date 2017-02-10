@@ -4,18 +4,16 @@ import com.olerom.vk.core.VkAdapter;
 import com.olerom.vk.core.VkGraph;
 import com.olerom.vk.core.VkRequest;
 import com.vk.api.sdk.objects.friends.UserXtrLists;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 
-import java.awt.*;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,7 +32,7 @@ public class MainController {
     private TextField codeField;
 
     @FXML
-    private TextArea testOutput;
+    private Canvas canvas;
 
     @FXML
     private void initialize() {
@@ -45,24 +43,49 @@ public class MainController {
     }
 
     private void run(String code) {
+
         VkAdapter vk = null;
         try {
             vk = new VkAdapter(code);
         } catch (Exception e) {
-            testOutput.appendText("Problem with creating VkAdapter, check code value.");
+            System.out.println("Problem with creating VkAdapter, check code value.");
             e.printStackTrace();
-            System.exit(1);
+//            System.exit(1);
         }
 
         try {
-            List<UserXtrLists> myFriends = vk.getFriends();
-            VkGraph<UserXtrLists> graph = new VkGraph<>(myFriends);
-            graph.build(vk);
-            testOutput.appendText(graph.toString());
+//            List<UserXtrLists> myFriends = vk.getFriends();
+//            VkGraph<UserXtrLists> graph = new VkGraph<>(myFriends);
+
+//            graph.build(vk);
+
+            GraphicsContext owner = canvas.getGraphicsContext2D();
+            owner.setFill(Color.CYAN);
+            owner.fillOval(canvas.getWidth() / 2, canvas.getHeight() / 2, 50, 50);
+
+            List<GraphicsContext> friends = new ArrayList<>();
+
+            for (int i = 0; i < 100; i++) {
+                GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
+                graphicsContext.setFill(Color.GREEN);
+                graphicsContext.setLineWidth(7);
+                handleAngle(graphicsContext);
+//                graphicsContext.fillOval(50, 110, 30, 30);
+                friends.add(graphicsContext);
+            }
+
         } catch (Exception e) {
-            testOutput.appendText("Problem with graph building.");
+            System.out.println("Problem with graph building.");
             e.printStackTrace();
             System.exit(1);
         }
+    }
+
+
+    private void handleAngle(GraphicsContext graphicsContext) {
+        double d = Math.random();
+        graphicsContext.fillOval(canvas.getWidth() / 2 + Math.sin(d * 2 * Math.PI) * 200,
+                canvas.getHeight() / 2 + Math.cos(d * 2 * Math.PI) * 200,
+                20, 20);
     }
 }

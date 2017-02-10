@@ -14,11 +14,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.nio.charset.StandardCharsets;
-import java.util.ResourceBundle;
 
 public class Main extends Application {
 
-    private static ResourceBundle bundle;
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setCharset(StandardCharsets.UTF_8);

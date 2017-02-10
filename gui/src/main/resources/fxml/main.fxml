@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.shape.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.olerom.vk.gui.controllers.MainController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1050.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.olerom.vk.gui.controllers.MainController">
     <children>
         <MenuBar>
             <menus>
@@ -19,6 +21,6 @@
         <Hyperlink fx:id="authUri" layoutX="25.0" layoutY="90.0" text="Hyperlink" />
         <TextField fx:id="codeField" layoutX="25.0" layoutY="125.0" promptText="Code value" />
         <Button fx:id="buildButton" layoutX="25.0" layoutY="160.0" mnemonicParsing="false" text="Build graph" />
-      <TextArea fx:id="testOutput" layoutX="25.0" layoutY="197.0" prefHeight="78.0" prefWidth="375.0" />
+        <Canvas fx:id="canvas" height="500.0" layoutX="24.0" layoutY="190.0" width="1012.0" />
     </children>
 </AnchorPane>
