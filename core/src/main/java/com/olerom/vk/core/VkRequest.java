@@ -9,7 +9,7 @@ public class VkRequest {
     final static String CLIENT_SECRET = "yFDcIlB3etwopMbPTpNV";
     final static String REDIRECT_URI = "https://oauth.vk.com/blank.html/";
     private final static String DISPLAY = "page";
-    private final static String PERMISSIONS = "friends,groups";
+    private final static String PERMISSIONS = "friends";
     private final static String RESPONSE_TYPE = "code";
 
     private String AUTH_URL = "https://oauth.vk.com/authorize" + "?client_id={APP_ID}"
