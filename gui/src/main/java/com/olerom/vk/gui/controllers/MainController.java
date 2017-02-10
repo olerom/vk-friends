@@ -11,7 +11,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,16 +51,21 @@ public class MainController {
         try {
             vk = new VkAdapter(code);
         } catch (Exception e) {
-            System.out.println("Problem with creating VkAdapter, check code value.");
+//            System.out.println("Problem with creating VkAdapter, check code value.");
             e.printStackTrace();
-//            System.exit(1);
+            System.exit(1);
         }
 
         try {
-//            List<UserXtrLists> myFriends = vk.getFriends();
-//            VkGraph<UserXtrLists> graph = new VkGraph<>(myFriends);
+            List<UserXtrLists> myFriends = vk.getFriends();
+            VkGraph<UserXtrLists> graph = new VkGraph<>(myFriends);
 
-//            graph.build(vk);
+
+            GraphicsContext graphicsContext2D = canvas.getGraphicsContext2D();
+            Image image = new Image("img/gears.gif");
+            graphicsContext2D.drawImage(image, canvas.getWidth() / 2, canvas.getHeight() / 2);
+
+            graph.build(vk);
 
             GraphicsContext owner = canvas.getGraphicsContext2D();
             owner.setFill(Color.CYAN);
@@ -65,12 +73,12 @@ public class MainController {
 
             List<GraphicsContext> friends = new ArrayList<>();
 
-            for (int i = 0; i < 100; i++) {
+            for (int i = 0; i < graph.size(); i++) {
                 GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
                 graphicsContext.setFill(Color.GREEN);
                 graphicsContext.setLineWidth(7);
-                handleAngle(graphicsContext);
-//                graphicsContext.fillOval(50, 110, 30, 30);
+                UserXtrLists friend = graph.getNode(i);
+                handleAngle(graphicsContext, friend);
                 friends.add(graphicsContext);
             }
 
@@ -82,10 +90,15 @@ public class MainController {
     }
 
 
-    private void handleAngle(GraphicsContext graphicsContext) {
+    private void handleAngle(GraphicsContext graphicsContext, UserXtrLists friend) {
         double d = Math.random();
-        graphicsContext.fillOval(canvas.getWidth() / 2 + Math.sin(d * 2 * Math.PI) * 200,
-                canvas.getHeight() / 2 + Math.cos(d * 2 * Math.PI) * 200,
+        double x = canvas.getWidth() / 2 + Math.sin(d * 2 * Math.PI) * 200 - Math.random() * 10;
+        double y = canvas.getHeight() / 2 + Math.cos(d * 2 * Math.PI) * 200 - Math.random() * 10;
+        graphicsContext.fillOval(x,
+                y,
                 20, 20);
+        graphicsContext.fillText(friend.getFirstName() + " " + friend.getLastName(), x, y);
+        graphicsContext.setTextAlign(TextAlignment.CENTER);
+        graphicsContext.setFont(Font.font(6));
     }
 }

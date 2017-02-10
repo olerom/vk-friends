@@ -71,4 +71,12 @@ public class VkGraph<T extends UserXtrLists> {
         }
         return stringBuilder.toString();
     }
+
+    public int size() {
+        return nodes.size();
+    }
+
+    public T getNode(int index){
+        return nodes.get(index).getValue();
+    }
 }

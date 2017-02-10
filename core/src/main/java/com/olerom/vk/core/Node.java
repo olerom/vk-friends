@@ -55,4 +55,8 @@ class Node<T extends UserXtrLists> {
     private boolean includes(T value) {
         return this.value.equals(value);
     }
+
+    public T getValue(){
+        return value;
+    }
 }
