@@ -26,9 +26,9 @@ public class Main extends Application {
 
         Parent root = fxmlLoader.load();
         primaryStage.setTitle("Social graph builder");
-        primaryStage.setMinWidth(850);
+        primaryStage.setMinWidth(1050);
         primaryStage.setMinHeight(600);
-        primaryStage.setWidth(850);
+        primaryStage.setWidth(1050);
         primaryStage.setHeight(700);
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
