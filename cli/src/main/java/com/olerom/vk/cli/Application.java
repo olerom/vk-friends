@@ -60,8 +60,8 @@ public class Application {
 
         try {
             List<UserXtrLists> myFriends = vk.getFriends();
-            VkGraph<UserXtrLists> graph = new VkGraph<>(myFriends);
-            graph.build(vk);
+            VkGraph<UserXtrLists> graph = new VkGraph<>(myFriends, vk);
+            graph.build();
             System.out.println(graph);
         } catch (Exception e) {
             System.out.println("Problem with graph building.");

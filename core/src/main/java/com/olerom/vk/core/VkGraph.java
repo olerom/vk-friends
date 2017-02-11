@@ -1,7 +1,9 @@
 package com.olerom.vk.core;
 
+import com.vk.api.sdk.client.actors.UserActor;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
+import com.vk.api.sdk.objects.account.UserSettings;
 import com.vk.api.sdk.objects.friends.UserXtrLists;
 
 import java.util.ArrayList;
@@ -13,27 +15,28 @@ import java.util.List;
  */
 public class VkGraph<T extends UserXtrLists> {
     private List<Node<T>> nodes;
+    private UserSettings owner;
+    private VkAdapter vkAdapter;
 
-    public VkGraph() {
-        nodes = new ArrayList<>();
-    }
-
-    public VkGraph(int numberOfVertexes) {
-        nodes = new ArrayList<>(numberOfVertexes);
-    }
-
-    public VkGraph(List<T> nodes) {
-        this(nodes.size());
+    public VkGraph(List<T> nodes, VkAdapter vkAdapter) throws ClientException, ApiException {
+        this.nodes = new ArrayList<>(nodes.size());
+        this.owner = vkAdapter.getVkApiClient().account().
+                getProfileInfo(vkAdapter.getUserActor()).execute();
+        this.vkAdapter = vkAdapter;
         for (T friend : nodes) {
             this.addVertex(friend);
         }
+    }
+
+    public UserSettings getOwner() {
+        return owner;
     }
 
     public void addVertex(T vertex) {
         nodes.add(new Node<>(vertex));
     }
 
-    public void build(VkAdapter vkAdapter) throws ClientException, ApiException, InterruptedException {
+    public void build() throws ClientException, ApiException, InterruptedException {
         for (UserXtrLists friend : vkAdapter.getFriends()) {
             if (!vkAdapter.isDeactivated(friend)) {
                 List<Integer> ids = vkAdapter.getMutals(friend.getId());
@@ -76,7 +79,7 @@ public class VkGraph<T extends UserXtrLists> {
         return nodes.size();
     }
 
-    public T getNode(int index){
+    public T getNode(int index) {
         return nodes.get(index).getValue();
     }
 }
