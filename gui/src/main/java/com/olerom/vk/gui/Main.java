@@ -14,7 +14,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.nio.charset.StandardCharsets;
-import java.util.ResourceBundle;
 
 public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
