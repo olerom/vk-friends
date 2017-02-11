@@ -3,6 +3,7 @@ package com.olerom.vk.gui.controllers;
 import com.olerom.vk.core.VkAdapter;
 import com.olerom.vk.core.VkGraph;
 import com.olerom.vk.core.VkRequest;
+import com.sun.javafx.iio.gif.GIFImageLoader2;
 import com.vk.api.sdk.objects.friends.UserXtrLists;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -12,6 +13,8 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
@@ -38,55 +41,67 @@ public class MainController {
     private Canvas canvas;
 
     @FXML
+    private ImageView imageView;
+
+    @FXML
+    private GraphDrawController graphDrawController;
+
+    @FXML
     private void initialize() {
         VkRequest request = new VkRequest();
         authUri.setText(request.getAuthURL());
         buildButton.setOnAction(e -> run(codeField.getText()));
         authUri.setOnAction(t -> System.out.println(authUri.getText()));
+
     }
 
     private void run(String code) {
-
-        VkAdapter vk = null;
-        try {
-            vk = new VkAdapter(code);
-        } catch (Exception e) {
-//            System.out.println("Problem with creating VkAdapter, check code value.");
-            e.printStackTrace();
-            System.exit(1);
-        }
-
-        try {
-            List<UserXtrLists> myFriends = vk.getFriends();
-            VkGraph<UserXtrLists> graph = new VkGraph<>(myFriends);
-
-
-            GraphicsContext graphicsContext2D = canvas.getGraphicsContext2D();
-            Image image = new Image("img/gears.gif");
-            graphicsContext2D.drawImage(image, canvas.getWidth() / 2, canvas.getHeight() / 2);
-
-            graph.build(vk);
-
-            GraphicsContext owner = canvas.getGraphicsContext2D();
-            owner.setFill(Color.CYAN);
-            owner.fillOval(canvas.getWidth() / 2, canvas.getHeight() / 2, 50, 50);
-
-            List<GraphicsContext> friends = new ArrayList<>();
-
-            for (int i = 0; i < graph.size(); i++) {
-                GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
-                graphicsContext.setFill(Color.GREEN);
-                graphicsContext.setLineWidth(7);
-                UserXtrLists friend = graph.getNode(i);
-                handleAngle(graphicsContext, friend);
-                friends.add(graphicsContext);
+        imageView.setImage(new Image("img/gears.gif"));
+        new Thread(() -> {
+            VkAdapter vk = null;
+            try {
+                vk = new VkAdapter(code);
+            } catch (Exception e) {
+                System.err.println("Problem with creating VkAdapter, check code value.");
+                e.printStackTrace();
+                System.exit(1);
             }
 
-        } catch (Exception e) {
-            System.out.println("Problem with graph building.");
-            e.printStackTrace();
-            System.exit(1);
-        }
+            try {
+                List<UserXtrLists> myFriends = vk.getFriends();
+                VkGraph<UserXtrLists> graph = new VkGraph<>(myFriends);
+
+
+//            GraphDrawController g = new GraphDrawController();
+//            g.load();
+
+                graph.build(vk);
+
+                GraphicsContext owner = canvas.getGraphicsContext2D();
+                owner.setFill(Color.CYAN);
+                owner.fillOval(canvas.getWidth() / 2, canvas.getHeight() / 2, 50, 50);
+
+                imageView.setImage(null);
+
+                List<GraphicsContext> friends = new ArrayList<>();
+
+                for (int i = 0; i < graph.size(); i++) {
+                    GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
+                    graphicsContext.setFill(Color.GREEN);
+                    graphicsContext.setLineWidth(7);
+                    UserXtrLists friend = graph.getNode(i);
+                    handleAngle(graphicsContext, friend);
+                    friends.add(graphicsContext);
+                }
+
+            } catch (Exception e) {
+                System.err.println("Problem with graph building.");
+                e.printStackTrace();
+                System.exit(1);
+            }
+
+
+        }).start();
     }
 
 
