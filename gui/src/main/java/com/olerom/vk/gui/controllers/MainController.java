@@ -94,17 +94,16 @@ public class MainController {
         double positionY = canvas.getHeight() / 2 + Math.cos(tempRandom * 2 * Math.PI)
                 * 195 - Math.random() * 40;
 
-        System.out.println(friend.getSex());
+        Color color;
         if (friend.getSex() == Sex.FEMALE) {
-            graphicsContext.setFill(Color.rgb(178, 31, 159));
-            graphicsContext.setStroke(Color.rgb(178, 31, 159));
+            color = Color.rgb(178, 31, 159);
         } else if (friend.getSex() == Sex.MALE) {
-            graphicsContext.setFill(Color.rgb(51, 179, 167));
-            graphicsContext.setStroke(Color.BLUE);
+            color = Color.rgb(51, 179, 167);
         } else {
-            graphicsContext.setFill(Color.BLACK);
-            graphicsContext.setStroke(Color.BLACK);
+            color = Color.BLACK;
         }
+        graphicsContext.setFill(color);
+        graphicsContext.setStroke(color);
 
         graphicsContext.moveTo(canvas.getWidth() / 2, canvas.getHeight() / 2);
         graphicsContext.lineTo(positionX, positionY);
