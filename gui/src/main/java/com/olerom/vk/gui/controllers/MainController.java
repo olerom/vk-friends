@@ -75,10 +75,6 @@ public class MainController {
                 graph.build();
                 imageView.setImage(null);
 
-//                GraphicsContext owner = canvas.getGraphicsContext2D();
-//                owner.setFill(Color.rgb(87, 128, 217));
-//                owner.fillOval(canvas.getWidth() / 2 - 25, canvas.getHeight() / 2 - 25, 50, 50);
-
                 for (int i = 0; i < graph.size(); i++) {
                     handleAngle(canvas.getGraphicsContext2D(), graph.getNode(i));
                 }
@@ -94,16 +90,16 @@ public class MainController {
     private void handleAngle(GraphicsContext graphicsContext, UserXtrLists friend) {
         double tempRandom = Math.random();
         double positionX = canvas.getWidth() / 2 + Math.sin(tempRandom * 2 * Math.PI)
-                * 195 - Math.random() * 40;
+                * 195 - Math.random() * 90;
         double positionY = canvas.getHeight() / 2 + Math.cos(tempRandom * 2 * Math.PI)
                 * 195 - Math.random() * 40;
 
         System.out.println(friend.getSex());
         if (friend.getSex() == Sex.FEMALE) {
-            graphicsContext.setFill(Color.PINK);
-            graphicsContext.setStroke(Color.PINK);
+            graphicsContext.setFill(Color.rgb(178, 31, 159));
+            graphicsContext.setStroke(Color.rgb(178, 31, 159));
         } else if (friend.getSex() == Sex.MALE) {
-            graphicsContext.setFill(Color.BLUE);
+            graphicsContext.setFill(Color.rgb(51, 179, 167));
             graphicsContext.setStroke(Color.BLUE);
         } else {
             graphicsContext.setFill(Color.BLACK);

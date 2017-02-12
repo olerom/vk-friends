@@ -22,7 +22,7 @@ public class Main extends Application {
         fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/main.fxml"));
 
         Parent root = fxmlLoader.load();
-        primaryStage.setTitle("Social graph builder");
+        primaryStage.setTitle("vk_friends");
         primaryStage.setMinWidth(1050);
         primaryStage.setMinHeight(600);
         primaryStage.setWidth(1050);
