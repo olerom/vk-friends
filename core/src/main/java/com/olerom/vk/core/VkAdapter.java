@@ -91,12 +91,13 @@ public class VkAdapter {
     }
 
     private List<UserField> createFields() {
-        List<UserField> fields = new ArrayList<>(5);
+        List<UserField> fields = new ArrayList<>(6);
         fields.add(UserField.BDATE);
         fields.add(UserField.CITY);
         fields.add(UserField.CONTACTS);
         fields.add(UserField.IS_FRIEND);
         fields.add(UserField.FRIEND_STATUS);
+        fields.add(UserField.SEX);
         return fields;
     }
 }

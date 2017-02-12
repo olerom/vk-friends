@@ -3,6 +3,7 @@ package com.olerom.vk.gui.controllers;
 import com.olerom.vk.core.VkAdapter;
 import com.olerom.vk.core.VkGraph;
 import com.olerom.vk.core.VkRequest;
+import com.vk.api.sdk.objects.base.Sex;
 import com.vk.api.sdk.objects.friends.UserXtrLists;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -16,7 +17,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -79,17 +79,8 @@ public class MainController {
 //                owner.setFill(Color.rgb(87, 128, 217));
 //                owner.fillOval(canvas.getWidth() / 2 - 25, canvas.getHeight() / 2 - 25, 50, 50);
 
-                List<GraphicsContext> friends = new ArrayList<>();
-
                 for (int i = 0; i < graph.size(); i++) {
-                    GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
-                    graphicsContext.setFill(Color.rgb(80, 173, 244));
-//                    graphicsContext.setLineWidth(7);
-                    UserXtrLists friend = graph.getNode(i);
-                    handleAngle(graphicsContext, friend);
-                    friends.add(graphicsContext);
-
-                    graphicsContext.beginPath();
+                    handleAngle(canvas.getGraphicsContext2D(), graph.getNode(i));
                 }
 
             } catch (Exception e) {
@@ -100,28 +91,33 @@ public class MainController {
         }).start();
     }
 
-
     private void handleAngle(GraphicsContext graphicsContext, UserXtrLists friend) {
-        double d = Math.random();
+        double tempRandom = Math.random();
+        double positionX = canvas.getWidth() / 2 + Math.sin(tempRandom * 2 * Math.PI)
+                * 195 - Math.random() * 40;
+        double positionY = canvas.getHeight() / 2 + Math.cos(tempRandom * 2 * Math.PI)
+                * 195 - Math.random() * 40;
 
-        double x = canvas.getWidth() / 2 +
-                Math.sin(Math.random() * 2 * Math.PI) * 230
-                - Math.random() * 130;
-        double y = canvas.getHeight() / 2 +
-                Math.cos(Math.random() * 2 * Math.PI) * 180
-                - Math.random() * 80;
-        graphicsContext.fillOval(x,
-                y,
-                4, 4);
+        System.out.println(friend.getSex());
+        if (friend.getSex() == Sex.FEMALE) {
+            graphicsContext.setFill(Color.PINK);
+            graphicsContext.setStroke(Color.PINK);
+        } else if (friend.getSex() == Sex.MALE) {
+            graphicsContext.setFill(Color.BLUE);
+            graphicsContext.setStroke(Color.BLUE);
+        } else {
+            graphicsContext.setFill(Color.BLACK);
+            graphicsContext.setStroke(Color.BLACK);
+        }
+
+        graphicsContext.moveTo(canvas.getWidth() / 2, canvas.getHeight() / 2);
+        graphicsContext.lineTo(positionX, positionY);
+        graphicsContext.closePath();
+        graphicsContext.stroke();
+
         graphicsContext.setTextAlign(TextAlignment.CENTER);
-        graphicsContext.setFont(Font.font(5));
-        graphicsContext.fillText(friend.getFirstName() + " " + friend.getLastName(), x, y);
+        graphicsContext.setFont(Font.font(10));
+        graphicsContext.fillText(friend.getFirstName() + " " + friend.getLastName(), positionX, positionY);
 
-
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.moveTo(canvas.getWidth() / 2 + 2, canvas.getHeight() / 2 + 2);
-        gc.lineTo(x, y);
-        gc.setFill(Color.rgb(201, 244, 242));
-        gc.stroke();
     }
 }
