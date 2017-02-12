@@ -69,8 +69,7 @@ public class MainController {
             }
 
             try {
-                List<UserXtrLists> myFriends = vk.getFriends();
-                VkGraph<UserXtrLists> graph = new VkGraph<>(myFriends, vk);
+                VkGraph<UserXtrLists> graph = new VkGraph<>(vk);
 
                 graph.build();
                 imageView.setImage(null);
@@ -89,10 +88,10 @@ public class MainController {
 
     private void handleAngle(GraphicsContext graphicsContext, UserXtrLists friend) {
         double tempRandom = Math.random();
-        double positionX = canvas.getWidth() / 2 + Math.sin(tempRandom * 2 * Math.PI)
-                * 195 - Math.random() * 90;
-        double positionY = canvas.getHeight() / 2 + Math.cos(tempRandom * 2 * Math.PI)
-                * 195 - Math.random() * 40;
+        double positionX = canvas.getWidth() / 2 + Math.cos(tempRandom * 2 * Math.PI)
+                * 195 - Math.random() * 80;
+        double positionY = canvas.getHeight() / 2 + Math.sin(tempRandom * 2 * Math.PI)
+                * 195 - Math.random() * 90 + 20;
 
         Color color;
         if (friend.getSex() == Sex.FEMALE) {
@@ -105,6 +104,8 @@ public class MainController {
         graphicsContext.setFill(color);
         graphicsContext.setStroke(color);
 
+
+        graphicsContext.beginPath();
         graphicsContext.moveTo(canvas.getWidth() / 2, canvas.getHeight() / 2);
         graphicsContext.lineTo(positionX, positionY);
         graphicsContext.closePath();
@@ -114,5 +115,6 @@ public class MainController {
         graphicsContext.setFont(Font.font(10));
         graphicsContext.fillText(friend.getFirstName() + " " + friend.getLastName(), positionX, positionY);
 
+        System.out.println(friend.getFirstName() + " " + friend.getLastName());
     }
 }

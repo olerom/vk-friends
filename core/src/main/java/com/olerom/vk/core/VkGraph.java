@@ -17,12 +17,13 @@ public class VkGraph<T extends UserXtrLists> {
     private UserSettings owner;
     private VkAdapter vkAdapter;
 
-    public VkGraph(List<T> nodes, VkAdapter vkAdapter) throws ClientException, ApiException {
-        this.nodes = new ArrayList<>(nodes.size());
+    public VkGraph(VkAdapter vkAdapter) throws ClientException, ApiException {
+        List<UserXtrLists> friends = vkAdapter.getFriends();
+        this.nodes = new ArrayList<>(friends.size());
         this.owner = vkAdapter.getVkApiClient().account().
                 getProfileInfo(vkAdapter.getUserActor()).execute();
         this.vkAdapter = vkAdapter;
-        for (T friend : nodes) {
+        for (T friend : (List<T>) friends) {
             this.addVertex(friend);
         }
     }

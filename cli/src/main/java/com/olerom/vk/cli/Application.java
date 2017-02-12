@@ -59,8 +59,7 @@ public class Application {
         }
 
         try {
-            List<UserXtrLists> myFriends = vk.getFriends();
-            VkGraph<UserXtrLists> graph = new VkGraph<>(myFriends, vk);
+            VkGraph<UserXtrLists> graph = new VkGraph<>(vk);
             graph.build();
             System.out.println(graph);
         } catch (Exception e) {
