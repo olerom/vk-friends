@@ -6,6 +6,7 @@ import com.olerom.vk.core.VkRequest;
 import com.vk.api.sdk.objects.base.Sex;
 import com.vk.api.sdk.objects.friends.UserXtrLists;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
@@ -17,7 +18,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
+import java.net.URL;
 import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * Date: 10.02.17

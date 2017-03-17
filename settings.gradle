@@ -1,4 +1,4 @@
-rootProject.name = 'vk_friends'
+rootProject.name = 'vk-friends'
 include 'core'
 include 'cli'
 include 'gui'
